@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Force-enable Nitro with the Node preset: better-sqlite3 is a native module,
+  // so this app must run on Node (not the Cloudflare Workers default). Produces
+  // a runnable server at .output/server/index.mjs.
+  nitro: { preset: "node-server" },
 });

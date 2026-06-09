@@ -20,6 +20,20 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Local SQLite data (created + seeded at runtime)
+/data/
+*.db
+*.db-wal
+*.db-shm
+
+# Playwright MCP artifacts
+.playwright-mcp/
+
+# Tooling / transient build + test artifacts
+.k6bin/
+*.exit
+.fndiag.txt
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

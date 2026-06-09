@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Bank al Etihad">
+  <rect width="100" height="100" rx="24" fill="#055563"/>
+  <g transform="translate(50 50) scale(0.72) translate(-50 -50)" fill="#ffffff">
+    <path d="M 44 42 C 33 34 31 15 46 6 C 52 3 59 5 62 11 C 55 15 56 24 63 29 C 70 34 69 45 61 48 C 54 51 48 47 44 42 Z" transform="rotate(0 50 50)"/>
+    <path d="M 44 42 C 33 34 31 15 46 6 C 52 3 59 5 62 11 C 55 15 56 24 63 29 C 70 34 69 45 61 48 C 54 51 48 47 44 42 Z" transform="rotate(45 50 50)"/>
+    <path d="M 44 42 C 33 34 31 15 46 6 C 52 3 59 5 62 11 C 55 15 56 24 63 29 C 70 34 69 45 61 48 C 54 51 48 47 44 42 Z" transform="rotate(90 50 50)"/>
+    <path d="M 44 42 C 33 34 31 15 46 6 C 52 3 59 5 62 11 C 55 15 56 24 63 29 C 70 34 69 45 61 48 C 54 51 48 47 44 42 Z" transform="rotate(135 50 50)"/>
+    <path d="M 44 42 C 33 34 31 15 46 6 C 52 3 59 5 62 11 C 55 15 56 24 63 29 C 70 34 69 45 61 48 C 54 51 48 47 44 42 Z" transform="rotate(180 50 50)"/>
+    <path d="M 44 42 C 33 34 31 15 46 6 C 52 3 59 5 62 11 C 55 15 56 24 63 29 C 70 34 69 45 61 48 C 54 51 48 47 44 42 Z" transform="rotate(225 50 50)"/>
+    <path d="M 44 42 C 33 34 31 15 46 6 C 52 3 59 5 62 11 C 55 15 56 24 63 29 C 70 34 69 45 61 48 C 54 51 48 47 44 42 Z" transform="rotate(270 50 50)"/>
+    <path d="M 44 42 C 33 34 31 15 46 6 C 52 3 59 5 62 11 C 55 15 56 24 63 29 C 70 34 69 45 61 48 C 54 51 48 47 44 42 Z" transform="rotate(315 50 50)"/>
+  </g>
+</svg>
