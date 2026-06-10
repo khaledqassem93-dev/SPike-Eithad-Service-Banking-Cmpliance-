@@ -104,12 +104,20 @@ let _db: Database.Database | null = null;
 export function getDb(): Database.Database {
   if (_db) return _db;
 
-  const dataDir = path.resolve(process.cwd(), "data");
-  fs.mkdirSync(dataDir, { recursive: true });
-  const file = process.env.KYC_DB_PATH ?? path.join(dataDir, "kyc.db");
+  // Vercel (and other serverless) have an ephemeral, read-only filesystem, so
+  // we fall back to an in-memory database there: it seeds fresh per instance
+  // and persists for the life of that warm instance (no durable writes).
+  const file =
+    process.env.KYC_DB_PATH ??
+    (process.env.VERCEL ? ":memory:" : path.join(process.cwd(), "data", "kyc.db"));
+  const inMemory = file === ":memory:";
+
+  if (!inMemory) {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+  }
 
   const db = new Database(file);
-  db.pragma("journal_mode = WAL");
+  if (!inMemory) db.pragma("journal_mode = WAL");
   db.pragma("foreign_keys = ON");
   db.exec(SCHEMA);
 

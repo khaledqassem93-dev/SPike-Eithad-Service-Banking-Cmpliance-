@@ -12,8 +12,9 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
-  // Force-enable Nitro with the Node preset: better-sqlite3 is a native module,
-  // so this app must run on Node (not the Cloudflare Workers default). Produces
-  // a runnable server at .output/server/index.mjs.
-  nitro: { preset: "node-server" },
+  // Force-enable Nitro on a Node target: better-sqlite3 is a native module, so
+  // this app must run on Node (not the Cloudflare Workers default). On Vercel
+  // (VERCEL=1 at build) emit the Vercel preset (.vercel/output); locally use the
+  // Node server preset (runnable at .output/server/index.mjs).
+  nitro: { preset: process.env.VERCEL ? "vercel" : "node-server" },
 });
