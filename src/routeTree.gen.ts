@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SourcesRouteImport } from './routes/sources'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ReviewsRouteImport } from './routes/reviews'
+import { Route as RegistrationRouteImport } from './routes/registration'
 import { Route as DetectionsRouteImport } from './routes/detections'
 import { Route as AlertsRouteImport } from './routes/alerts'
 import { Route as AccountsRouteImport } from './routes/accounts'
@@ -30,6 +31,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const ReviewsRoute = ReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegistrationRoute = RegistrationRouteImport.update({
+  id: '/registration',
+  path: '/registration',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DetectionsRoute = DetectionsRouteImport.update({
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/accounts': typeof AccountsRoute
   '/alerts': typeof AlertsRoute
   '/detections': typeof DetectionsRoute
+  '/registration': typeof RegistrationRoute
   '/reviews': typeof ReviewsRoute
   '/settings': typeof SettingsRoute
   '/sources': typeof SourcesRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/accounts': typeof AccountsRoute
   '/alerts': typeof AlertsRoute
   '/detections': typeof DetectionsRoute
+  '/registration': typeof RegistrationRoute
   '/reviews': typeof ReviewsRoute
   '/settings': typeof SettingsRoute
   '/sources': typeof SourcesRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/accounts': typeof AccountsRoute
   '/alerts': typeof AlertsRoute
   '/detections': typeof DetectionsRoute
+  '/registration': typeof RegistrationRoute
   '/reviews': typeof ReviewsRoute
   '/settings': typeof SettingsRoute
   '/sources': typeof SourcesRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/accounts'
     | '/alerts'
     | '/detections'
+    | '/registration'
     | '/reviews'
     | '/settings'
     | '/sources'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/accounts'
     | '/alerts'
     | '/detections'
+    | '/registration'
     | '/reviews'
     | '/settings'
     | '/sources'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/accounts'
     | '/alerts'
     | '/detections'
+    | '/registration'
     | '/reviews'
     | '/settings'
     | '/sources'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AccountsRoute: typeof AccountsRoute
   AlertsRoute: typeof AlertsRoute
   DetectionsRoute: typeof DetectionsRoute
+  RegistrationRoute: typeof RegistrationRoute
   ReviewsRoute: typeof ReviewsRoute
   SettingsRoute: typeof SettingsRoute
   SourcesRoute: typeof SourcesRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/reviews'
       fullPath: '/reviews'
       preLoaderRoute: typeof ReviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/registration': {
+      id: '/registration'
+      path: '/registration'
+      fullPath: '/registration'
+      preLoaderRoute: typeof RegistrationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/detections': {
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountsRoute: AccountsRoute,
   AlertsRoute: AlertsRoute,
   DetectionsRoute: DetectionsRoute,
+  RegistrationRoute: RegistrationRoute,
   ReviewsRoute: ReviewsRoute,
   SettingsRoute: SettingsRoute,
   SourcesRoute: SourcesRoute,

@@ -618,6 +618,7 @@ type SettingsRow = {
   ai_provider: string;
   ai_api_key: string;
   ai_model: string;
+  scan_directory: string;
 };
 
 export function getSettings(): AppSettings {
@@ -634,6 +635,7 @@ export function getSettings(): AppSettings {
       orgName: "Bank al Etihad",
       aiModel: "claude-opus-4-8",
       aiConfigured: false,
+      scanDirectory: "",
     };
   }
   return {
@@ -646,6 +648,7 @@ export function getSettings(): AppSettings {
     aiModel: row.ai_model || "claude-opus-4-8",
     // Only a boolean leaves the server — the raw key is never sent to the client.
     aiConfigured: !!(row.ai_api_key && row.ai_api_key.length > 0),
+    scanDirectory: row.scan_directory ?? "",
   };
 }
 
@@ -677,7 +680,8 @@ export function updateSettings(patch: Partial<AppSettings> & { aiApiKey?: string
   db.prepare(
     `UPDATE app_settings SET match_threshold = @matchThreshold, ownership_threshold = @ownershipThreshold,
        due_soon_days = @dueSoonDays, auto_escalate_critical = @autoEscalate, officer_name = @officerName,
-       org_name = @orgName, ai_model = @aiModel, updated_at = datetime('now') WHERE id = 1`,
+       org_name = @orgName, ai_model = @aiModel, scan_directory = @scanDirectory,
+       updated_at = datetime('now') WHERE id = 1`,
   ).run({
     matchThreshold: next.matchThreshold,
     ownershipThreshold: next.ownershipThreshold,
@@ -686,6 +690,7 @@ export function updateSettings(patch: Partial<AppSettings> & { aiApiKey?: string
     officerName: next.officerName,
     orgName: next.orgName,
     aiModel,
+    scanDirectory: next.scanDirectory ?? "",
   });
   // Only overwrite the key when a non-empty new value is supplied (so saving
   // other settings doesn't wipe the stored key).

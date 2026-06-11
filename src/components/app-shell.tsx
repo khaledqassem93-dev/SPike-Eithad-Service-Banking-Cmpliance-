@@ -6,6 +6,7 @@ import {
   Bell,
   Building2,
   ChevronRight,
+  ClipboardList,
   FileSearch,
   Globe2,
   LayoutDashboard,
@@ -28,7 +29,8 @@ export type Section =
   | "reviews"
   | "detections"
   | "sources"
-  | "settings";
+  | "settings"
+  | "registration";
 
 const NAV: Array<{ key: Section; label: string; icon: ElementType; to: string }> = [
   { key: "overview", label: "Overview", icon: LayoutDashboard, to: "/" },
@@ -38,6 +40,7 @@ const NAV: Array<{ key: Section; label: string; icon: ElementType; to: string }>
   { key: "detections", label: "Detections", icon: Activity, to: "/detections" },
   { key: "sources", label: "Sources", icon: Globe2, to: "/sources" },
   { key: "settings", label: "Settings", icon: Settings, to: "/settings" },
+  { key: "registration", label: "Registration", icon: ClipboardList, to: "/registration" },
 ];
 
 export function AppShell({

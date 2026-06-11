@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { CheckCircle2, Loader2, RefreshCw, Save, SlidersHorizontal, Sparkles } from "lucide-react";
+import { CheckCircle2, FolderOpen, Loader2, RefreshCw, Save, SlidersHorizontal, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -256,6 +256,30 @@ function SettingsPage() {
                 <span className="text-muted-foreground">Not configured — add a key and Save.</span>
               )}
             </div>
+          </Card>
+
+          <Card className="p-5">
+            <div className="flex items-center gap-2 text-sm font-semibold mb-1">
+              <FolderOpen className="w-4 h-4 text-accent" />
+              Automated QR batch scan
+            </div>
+            <p className="text-xs text-muted-foreground mb-1">
+              Directory scanned every weekday at 08:00 by the scheduled task. The task reads this
+              path from the database, so updating it here takes effect on the next run without
+              re-registering the scheduler.
+            </p>
+            <Row
+              label="Scan directory"
+              hint="Absolute path to the folder containing PDF certificates (e.g. C:\KYC\incoming)."
+            >
+              <Input
+                value={form.scanDirectory ?? ""}
+                onChange={(e) => setForm({ ...form, scanDirectory: e.target.value })}
+                placeholder="C:\KYC\incoming"
+                className="h-9 font-mono text-xs"
+                dir="ltr"
+              />
+            </Row>
           </Card>
 
           <div className="flex flex-wrap items-center gap-3">

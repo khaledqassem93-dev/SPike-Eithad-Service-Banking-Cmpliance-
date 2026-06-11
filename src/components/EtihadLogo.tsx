@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 // core. Recreated as vector art to match the bank's identity. Uses
 // currentColor so it adapts to its container (dark on the white logo chip,
 // inherits foreground elsewhere / in dark mode).
-
 const PETAL =
   "M 44 42 C 33 34 31 15 46 6 C 52 3 59 5 62 11 C 55 15 56 24 63 29 C 70 34 69 45 61 48 C 54 51 48 47 44 42 Z";
 const ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];

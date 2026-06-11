@@ -1,5 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import {
+  extractQrData,
+  checkAndNotifyChanges,
+  scanDirectoryQr,
+  processBatchItems,
+} from "../server/registration-agent.server";
+import type { QrField } from "../registration-types";
 
 import {
   acknowledgeChange,
@@ -177,11 +184,90 @@ export const mutateUpdateSettings = createServerFn({ method: "POST" })
       orgName: z.string().min(1).max(80).optional(),
       aiModel: z.string().min(1).max(60).optional(),
       aiApiKey: z.string().max(300).optional(),
+      scanDirectory: z.string().max(500).optional(),
     }),
   )
   .handler(async ({ data }) => updateSettings(data));
 
 export const mutateRescreenAll = createServerFn({ method: "POST" }).handler(async () => rescreenAll());
+
+/* ---------------- Company registration — QR extraction ------------ */
+
+export const mutateExtractQrData = createServerFn({ method: "POST" })
+  .validator(z.object({ qrText: z.string().min(1) }))
+  .handler(async ({ data }) => {
+    const settings = getSettings();
+    return extractQrData(data.qrText, settings.aiApiKey ?? "", settings.aiModel ?? "claude-sonnet-4-6");
+  });
+
+/* ---------------- Company registration — form submission ----------- */
+
+const qrFieldSchema = z.object({
+  fieldKey: z.string(),
+  labelEn: z.string(),
+  labelAr: z.string(),
+  value: z.string(),
+  found: z.boolean(),
+});
+
+/* ---------------- Batch: scan a directory of PDFs ----------------- */
+
+export const mutateScanDirectory = createServerFn({ method: "POST" })
+  .validator(z.object({ dirPath: z.string().min(1) }))
+  .handler(async ({ data }) => scanDirectoryQr(data.dirPath));
+
+export const mutateProcessBatch = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      items: z.array(
+        z.object({
+          fileName: z.string(),
+          filePath: z.string(),
+          qrFound: z.boolean(),
+          qrText: z.string(),
+          pageNumber: z.number(),
+          error: z.string().optional(),
+        }),
+      ),
+      contactEmails: z.record(z.string(), z.string()),
+    }),
+  )
+  .handler(async ({ data }) => {
+    const settings = getSettings();
+    return processBatchItems(
+      data.items,
+      data.contactEmails,
+      settings.aiApiKey ?? "",
+      settings.aiModel ?? "claude-sonnet-4-6",
+    );
+  });
+
+export const mutateSubmitRegistration = createServerFn({ method: "POST" })
+  .validator(
+    z.object({
+      form: z.object({
+        legalEntityType: z.string(),
+        profitStatus: z.enum(["profit", "nonprofit"]),
+        businessLine: z.string(),
+        legalNameAr: z.string(),
+        legalNameEn: z.string(),
+        declaredCapital: z.string(),
+        mainActivity: z.string(),
+        isListed: z.boolean(),
+        companyNationality: z.string(),
+        nationalId: z.string(),
+        registrationNumber: z.string(),
+        taxNumber: z.string(),
+        taxExemptionStatus: z.enum(["exempt", "partial", "none"]),
+        contactName: z.string(),
+        contactEmail: z.string().email(),
+      }),
+      qrFields: z.array(qrFieldSchema),
+    }),
+  )
+  .handler(async ({ data }) => {
+    return checkAndNotifyChanges(data.form, data.qrFields as QrField[]);
+  });
 
 /* ---------------- Cowork Compliance agent ---------------- */
 

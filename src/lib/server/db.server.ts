@@ -126,6 +126,7 @@ export function getDb(): Database.Database {
     "ai_provider TEXT NOT NULL DEFAULT 'anthropic'",
     "ai_api_key TEXT NOT NULL DEFAULT ''",
     "ai_model TEXT NOT NULL DEFAULT 'claude-opus-4-8'",
+    "scan_directory TEXT NOT NULL DEFAULT ''",
   ]) {
     try {
       db.exec(`ALTER TABLE app_settings ADD COLUMN ${col}`);

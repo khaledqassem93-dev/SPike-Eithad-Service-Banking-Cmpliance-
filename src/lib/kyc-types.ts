@@ -145,6 +145,7 @@ export interface AppSettings {
   orgName: string;
   aiModel: string;
   aiConfigured: boolean; // whether a Cowork Compliance API key is stored (key never sent to client)
+  scanDirectory: string; // default directory for the daily automated QR batch scan
 }
 
 /* ---------------- Cowork Compliance AI agent ---------------- */
