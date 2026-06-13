@@ -167,8 +167,10 @@ function ClientPage() {
       <div className="space-y-1">
         <Label className="text-xs font-medium">
           {labelEn} <span className="text-muted-foreground font-normal">/ {labelAr}</span>
+          <span className="text-danger ml-0.5">*</span>
         </Label>
         <Input
+          required
           value={String(form[key])}
           onChange={(e) => setForm({ ...form, [key]: e.target.value })}
           className="h-9 text-sm"
@@ -229,8 +231,9 @@ function ClientPage() {
 
               <div className="grid sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <Label className="text-xs font-medium">Profit Status <span className="text-muted-foreground font-normal">/ الوضع الربحي</span></Label>
+                  <Label className="text-xs font-medium">Profit Status <span className="text-muted-foreground font-normal">/ الوضع الربحي</span><span className="text-danger ml-0.5">*</span></Label>
                   <select
+                    required
                     className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
                     value={form.profitStatus}
                     onChange={(e) => setForm({ ...form, profitStatus: e.target.value as "profit" | "nonprofit" })}
@@ -240,12 +243,14 @@ function ClientPage() {
                   </select>
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-xs font-medium">Tax Exemption <span className="text-muted-foreground font-normal">/ الإعفاء الضريبي</span></Label>
+                  <Label className="text-xs font-medium">Tax Exemption <span className="text-muted-foreground font-normal">/ الإعفاء الضريبي</span><span className="text-danger ml-0.5">*</span></Label>
                   <select
+                    required
                     className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
                     value={form.taxExemptionStatus}
                     onChange={(e) => setForm({ ...form, taxExemptionStatus: e.target.value as "exempt" | "partial" | "none" })}
                   >
+                    <option value="">Select / اختر</option>
                     <option value="none">None / لا يوجد</option>
                     <option value="partial">Partial / جزئي</option>
                     <option value="exempt">Exempt / معفي</option>
