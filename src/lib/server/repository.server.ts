@@ -706,6 +706,96 @@ export function updateSettings(patch: Partial<AppSettings> & { aiApiKey?: string
   return getSettings();
 }
 
+/* ---------------- Client submissions ---------------- */
+
+export interface ClientSubmission {
+  id: string;
+  legalEntityType: string;
+  profitStatus: string;
+  businessLine: string;
+  legalNameAr: string;
+  legalNameEn: string;
+  declaredCapital: string;
+  mainActivity: string;
+  isListed: boolean;
+  companyNationality: string;
+  nationalId: string;
+  registrationNumber: string;
+  taxNumber: string;
+  taxExemptionStatus: string;
+  contactName: string;
+  contactEmail: string;
+  status: "pending" | "reviewed" | "approved" | "rejected";
+  submittedAt: string;
+}
+
+export function saveClientSubmission(
+  data: Omit<ClientSubmission, "id" | "submittedAt" | "status">,
+): ClientSubmission {
+  const db = getDb();
+  const id = `sub_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  db.prepare(
+    `INSERT INTO client_submissions
+      (id, legal_entity_type, profit_status, business_line, legal_name_ar, legal_name_en,
+       declared_capital, main_activity, is_listed, company_nationality, national_id,
+       registration_number, tax_number, tax_exemption_status, contact_name, contact_email)
+     VALUES
+      (@id, @legalEntityType, @profitStatus, @businessLine, @legalNameAr, @legalNameEn,
+       @declaredCapital, @mainActivity, @isListed, @companyNationality, @nationalId,
+       @registrationNumber, @taxNumber, @taxExemptionStatus, @contactName, @contactEmail)`,
+  ).run({ id, ...data, isListed: data.isListed ? 1 : 0 });
+  logAudit(null, "client_submission", `New client update from ${data.contactEmail}`);
+  return getClientSubmission(id)!;
+}
+
+export function listClientSubmissions(): ClientSubmission[] {
+  return (
+    getDb()
+      .prepare("SELECT * FROM client_submissions ORDER BY submitted_at DESC")
+      .all() as Array<Record<string, unknown>>
+  ).map(rowToSubmission);
+}
+
+export function getClientSubmission(id: string): ClientSubmission | null {
+  const row = getDb()
+    .prepare("SELECT * FROM client_submissions WHERE id = ?")
+    .get(id) as Record<string, unknown> | undefined;
+  return row ? rowToSubmission(row) : null;
+}
+
+export function updateClientSubmissionStatus(
+  id: string,
+  status: ClientSubmission["status"],
+): ClientSubmission | null {
+  getDb()
+    .prepare("UPDATE client_submissions SET status = ? WHERE id = ?")
+    .run(status, id);
+  return getClientSubmission(id);
+}
+
+function rowToSubmission(r: Record<string, unknown>): ClientSubmission {
+  return {
+    id: r.id as string,
+    legalEntityType: r.legal_entity_type as string,
+    profitStatus: r.profit_status as string,
+    businessLine: r.business_line as string,
+    legalNameAr: r.legal_name_ar as string,
+    legalNameEn: r.legal_name_en as string,
+    declaredCapital: r.declared_capital as string,
+    mainActivity: r.main_activity as string,
+    isListed: !!(r.is_listed as number),
+    companyNationality: r.company_nationality as string,
+    nationalId: r.national_id as string,
+    registrationNumber: r.registration_number as string,
+    taxNumber: r.tax_number as string,
+    taxExemptionStatus: r.tax_exemption_status as string,
+    contactName: r.contact_name as string,
+    contactEmail: r.contact_email as string,
+    status: r.status as ClientSubmission["status"],
+    submittedAt: r.submitted_at as string,
+  };
+}
+
 /* ---------------- Cowork Compliance agent ---------------- */
 
 export async function adviseCase(accountId: string): Promise<ComplianceAdvice | null> {

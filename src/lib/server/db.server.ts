@@ -97,6 +97,29 @@ CREATE TABLE IF NOT EXISTS app_settings (
   updated_at             TEXT NOT NULL DEFAULT (datetime('now'))
 );
 INSERT OR IGNORE INTO app_settings (id) VALUES (1);
+
+CREATE TABLE IF NOT EXISTS client_submissions (
+  id                   TEXT PRIMARY KEY,
+  legal_entity_type    TEXT NOT NULL DEFAULT '',
+  profit_status        TEXT NOT NULL DEFAULT '',
+  business_line        TEXT NOT NULL DEFAULT '',
+  legal_name_ar        TEXT NOT NULL DEFAULT '',
+  legal_name_en        TEXT NOT NULL DEFAULT '',
+  declared_capital     TEXT NOT NULL DEFAULT '',
+  main_activity        TEXT NOT NULL DEFAULT '',
+  is_listed            INTEGER NOT NULL DEFAULT 0,
+  company_nationality  TEXT NOT NULL DEFAULT '',
+  national_id          TEXT NOT NULL DEFAULT '',
+  registration_number  TEXT NOT NULL DEFAULT '',
+  tax_number           TEXT NOT NULL DEFAULT '',
+  tax_exemption_status TEXT NOT NULL DEFAULT '',
+  contact_name         TEXT NOT NULL DEFAULT '',
+  contact_email        TEXT NOT NULL DEFAULT '',
+  status               TEXT NOT NULL DEFAULT 'pending',
+  submitted_at         TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_submissions_email ON client_submissions(contact_email);
+CREATE INDEX IF NOT EXISTS idx_submissions_status ON client_submissions(status);
 `;
 
 let _db: Database.Database | null = null;

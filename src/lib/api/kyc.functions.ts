@@ -32,6 +32,9 @@ import {
   startKycRefresh,
   startTriage,
   updateSettings,
+  saveClientSubmission,
+  listClientSubmissions,
+  updateClientSubmissionStatus,
 } from "../server/repository.server";
 
 // Server functions = the validated RPC boundary between the dashboard and the
@@ -268,6 +271,38 @@ export const mutateSubmitRegistration = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     return checkAndNotifyChanges(data.form, data.qrFields as QrField[]);
   });
+
+/* ---------------- Client submissions ---------------- */
+
+const clientSubmissionSchema = z.object({
+  legalEntityType: z.string(),
+  profitStatus: z.string(),
+  businessLine: z.string(),
+  legalNameAr: z.string(),
+  legalNameEn: z.string(),
+  declaredCapital: z.string(),
+  mainActivity: z.string(),
+  isListed: z.boolean(),
+  companyNationality: z.string(),
+  nationalId: z.string(),
+  registrationNumber: z.string(),
+  taxNumber: z.string(),
+  taxExemptionStatus: z.string(),
+  contactName: z.string(),
+  contactEmail: z.string().email(),
+});
+
+export const mutateSaveClientSubmission = createServerFn({ method: "POST" })
+  .validator(clientSubmissionSchema)
+  .handler(async ({ data }) => saveClientSubmission(data));
+
+export const fetchClientSubmissions = createServerFn({ method: "GET" }).handler(async () =>
+  listClientSubmissions(),
+);
+
+export const mutateClientSubmissionStatus = createServerFn({ method: "POST" })
+  .validator(z.object({ id: z.string().min(1), status: z.enum(["pending", "reviewed", "approved", "rejected"]) }))
+  .handler(async ({ data }) => updateClientSubmissionStatus(data.id, data.status));
 
 /* ---------------- Cowork Compliance agent ---------------- */
 

@@ -13,6 +13,7 @@ import {
   Settings,
   ShieldAlert,
   Sparkles,
+  UserCheck,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -30,7 +31,8 @@ export type Section =
   | "detections"
   | "sources"
   | "settings"
-  | "registration";
+  | "registration"
+  | "client";
 
 const NAV: Array<{ key: Section; label: string; icon: ElementType; to: string }> = [
   { key: "overview", label: "Overview", icon: LayoutDashboard, to: "/" },
@@ -41,6 +43,7 @@ const NAV: Array<{ key: Section; label: string; icon: ElementType; to: string }>
   { key: "sources", label: "Sources", icon: Globe2, to: "/sources" },
   { key: "settings", label: "Settings", icon: Settings, to: "/settings" },
   { key: "registration", label: "Registration", icon: ClipboardList, to: "/registration" },
+  { key: "client", label: "Client Updates", icon: UserCheck, to: "/client" },
 ];
 
 export function AppShell({
