@@ -9,6 +9,7 @@ import {
   ClipboardList,
   FileSearch,
   Globe2,
+  Inbox,
   LayoutDashboard,
   Settings,
   ShieldAlert,
@@ -32,7 +33,8 @@ export type Section =
   | "sources"
   | "settings"
   | "registration"
-  | "client";
+  | "client"
+  | "submissions";
 
 const NAV: Array<{ key: Section; label: string; icon: ElementType; to: string }> = [
   { key: "overview", label: "Overview", icon: LayoutDashboard, to: "/" },
@@ -44,6 +46,7 @@ const NAV: Array<{ key: Section; label: string; icon: ElementType; to: string }>
   { key: "settings", label: "Settings", icon: Settings, to: "/settings" },
   { key: "registration", label: "Registration", icon: ClipboardList, to: "/registration" },
   { key: "client", label: "Client Updates", icon: UserCheck, to: "/client" },
+  { key: "submissions", label: "Received Submissions", icon: Inbox, to: "/submissions" },
 ];
 
 export function AppShell({
